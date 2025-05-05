@@ -1,0 +1,39 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/events",
+      "dest": "/api/events.js"
+    },
+    {
+      "src": "/api/discount",
+      "dest": "/api/discount.js"
+    },
+    {
+      "src": "/api/reg-types",
+      "dest": "/api/reg-types.js"
+    },
+    {
+      "src": "/api/registrant",
+      "dest": "/api/registrant.js"
+    },
+    {
+      "src": "/api/process-payment",
+      "dest": "/api/process-payment.js"
+    },
+    {
+      "src": "/api/create-registrant",
+      "dest": "/api/create-registrant.js"
+    },
+    {
+      "src": "/api/register-pay",
+      "dest": "/api/register-pay.js"
+    }
+  ]
+}
