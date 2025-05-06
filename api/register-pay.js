@@ -20,12 +20,6 @@ const handler = async (req, res) => {
             currency: 'cad',
             source: token,
             description: 'Event Registration Payment',
-            'metadata': {
-                'order_id': '12345',
-                'customer_name': 'John Doe',
-                'email': 'customer@company.com',
-                'phone': '08123456789'
-            }
         });
 
         if (payment.status !== 'succeeded') {
