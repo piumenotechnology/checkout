@@ -39,7 +39,10 @@ const handler = async (req, res) => {
                 last_name: participant.lastName,
                 registration_status: 'confirmed',
                 send_email: 'true',
-                discount: 'testcodeneel',
+                discount: {
+                    "id": 4728765,
+                    "value": "testcodeneel"
+                },
                 reg_type_id: participant.regType,
                 company: participant.company,
                 job_title: participant.jobTitle,
