@@ -64,7 +64,7 @@ const handler = async (req, res) => {
                             headers: {
                                 'Authorization': `Bearer ${swoogoToken}`,
                                 'Accept': 'application/json',
-                                'Content-Type': 'application/json',
+                                'Content-Type': 'application/x-www-form-urlencoded',
                             },
                         }
                     );
@@ -160,7 +160,7 @@ const handler = async (req, res) => {
                             headers: {
                                 'Authorization': `Bearer ${swoogoToken}`,
                                 'Accept': 'application/json',
-                                'Content-Type': 'application/json',
+                                'Content-Type': 'application/x-www-form-urlencoded',
                             },
                         }
                     );
@@ -172,7 +172,7 @@ const handler = async (req, res) => {
                             headers: {
                                 'Authorization': `Bearer ${swoogoToken}`,
                                 'Accept': 'application/json',
-                                'Content-Type': 'application/json',
+                                'Content-Type': 'application/x-www-form-urlencoded',
                             },
                         }
                     );
