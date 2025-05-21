@@ -10,9 +10,12 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@sparticuz/chromium": "^133.0.0",
     "axios": "^1.8.4",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "ics": "^3.8.1",
+    "puppeteer-core": "^10.4.0",
     "stripe": "^18.0.0"
   }
 }

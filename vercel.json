@@ -1,19 +1,19 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
+  "functions": {
+    "api/generate-invoice.js": {
+      "memory": 512,
+      "maxDuration": 30
     }
-  ],
+  },
   "routes": [
     {
       "src": "/api/events",
       "dest": "/api/events.js"
     },
     {
-      "src": "/api/discount",
-      "dest": "/api/discount.js"
+      "src": "/api/discounts",
+      "dest": "/api/discounts.js"
     },
     {
       "src": "/api/reg-types",
@@ -34,6 +34,14 @@
     {
       "src": "/api/register-pay",
       "dest": "/api/register-pay.js"
+    },
+    {
+      "src": "/api/generate-invoice",
+      "dest": "/api/generate-invoice.js"
+    },
+    {
+      "src": "/api/add-to-calendar",
+      "dest": "/api/add-to-calendar.js"
     }
   ]
 }
