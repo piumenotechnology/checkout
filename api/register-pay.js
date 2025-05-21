@@ -149,15 +149,13 @@ const handler = async (req, res) => {
         // Update registrants to 'confirmed'
         const updateResponses = await Promise.all(
             registrantResponses.map(async (r) => {
-                const updateData = {
-                    registration_status: 'confirmed',
-                    send_email: 'true',
-                };
-
                 try {
-                    const updateRes = await axios.put(
+                    await axios.put(
                         `https://api.swoogo.com/api/v1/registrants/update/${r.data.id}`,
-                        updateData,
+                        {
+                            registration_status: 'confirmed',
+                            send_email: 'true',
+                        },
                         {
                             headers: {
                                 'Authorization': `Bearer ${swoogoToken}`,
@@ -166,16 +164,23 @@ const handler = async (req, res) => {
                             },
                         }
                     );
-                    return {
-                        success: true,
-                        data: updateRes.data
-                    };
+
+                    await axios.post(
+                        `https://api.swoogo.com/api/v1/registrants/${r.data.id}/trigger-email/registration_created`,
+                        {},
+                        {
+                            headers: {
+                                'Authorization': `Bearer ${swoogoToken}`,
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                            },
+                        }
+                    );
+
+                    return { success: true, id: r.data.id };
                 } catch (error) {
-                    console.error('Failed to confirm registrant:', error.response?.data || error.message);
-                    return {
-                        success: false,
-                        error: error.response?.data || error.message
-                    };
+                    console.error(`Error updating or emailing registrant ${r.data.id}:`, error.response?.data || error.message);
+                    return { success: false, id: r.data.id, error: error.response?.data || error.message };
                 }
             })
         );
