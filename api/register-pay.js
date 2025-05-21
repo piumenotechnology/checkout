@@ -43,7 +43,7 @@ const handler = async (req, res) => {
                     event_id: eventId,
                     first_name: participant.firstName,
                     last_name: participant.lastName,
-                    registration_status: 'confirmed',
+                    registration_status: 'in_progress',
                     send_email: 'false',
                     discount_code: participant.discount || '',
                     reg_type_id: participant.regType,
