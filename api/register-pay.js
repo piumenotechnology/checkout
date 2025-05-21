@@ -2,6 +2,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const getToken = require('../utils/getToken');
 const allowCors = require('../utils/allowCors');
 const axios = require('axios');
+const { URLSearchParams } = require('url');
 
 const handler = async (req, res) => {
     if (req.method !== 'POST') {
@@ -38,22 +39,22 @@ const handler = async (req, res) => {
 
         const registrantResponses = await Promise.all(
             allParticipants.map(async (participant) => {
-                const registrantData = {
-                    email: participant.email,
-                    event_id: eventId,
-                    first_name: participant.firstName,
-                    last_name: participant.lastName,
-                    registration_status: 'in_progress',
-                    send_email: 'false',
-                    discount_code: participant.discount || '',
-                    reg_type_id: participant.regType,
-                    company: participant.company,
-                    job_title: participant.jobTitle,
-                    work_phone: participant.phone,
-                    c_5970654: participant.country,
-                    c_5970655: participant.state,
-                    payment_method: 'credit_card'
-                };
+                const formData = new URLSearchParams();
+                // formData.append('po_number', `PO-${Date.now()}`);
+                formData.append('email', participant.email);
+                formData.append('event_id', eventId);
+                formData.append('first_name', participant.firstName);
+                formData.append('last_name', participant.lastName);
+                formData.append('registration_status', 'in_progress');
+                formData.append('send_email', 'false');
+                formData.append('discount_code', participant.discount || '');
+                formData.append('reg_type_id', participant.regType);
+                formData.append('company', participant.company);
+                formData.append('job_title', participant.jobTitle);
+                formData.append('work_phone', participant.phone);
+                formData.append('c_5970654', participant.country);
+                formData.append('c_5970655', participant.state);
+                formData.append('payment_method', 'credit_card');
 
                 try {
                     const response = await axios.post(
@@ -149,13 +150,12 @@ const handler = async (req, res) => {
         // Update registrants to 'confirmed'
         const updateResponses = await Promise.all(
             registrantResponses.map(async (r) => {
+                const updateForm = new URLSearchParams();
+                updateForm.append('registration_status', 'confirmed');
+                updateForm.append('send_email', 'true');
                 try {
-                    await axios.put(
-                        `https://api.swoogo.com/api/v1/registrants/update/${r.data.id}`,
-                        {
-                            registration_status: 'confirmed',
-                            send_email: 'true',
-                        },
+                    const updateRes = await axios.put(
+                        `https://api.swoogo.com/api/v1/registrants/update/${r.data.id}`, updateForm,
                         {
                             headers: {
                                 'Authorization': `Bearer ${swoogoToken}`,
@@ -177,7 +177,10 @@ const handler = async (req, res) => {
                         }
                     );
 
-                    return { success: true, id: r.data.id };
+                    return {
+                        success: true,
+                        data: updateRes.data
+                    };
                 } catch (error) {
                     console.error(`Error updating or emailing registrant ${r.data.id}:`, error.response?.data || error.message);
                     return { success: false, id: r.data.id, error: error.response?.data || error.message };
