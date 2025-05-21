@@ -59,7 +59,7 @@ const handler = async (req, res) => {
                 try {
                     const response = await axios.post(
                         'https://api.swoogo.com/api/v1/registrants/create',
-                        registrantData,
+                        formData,
                         {
                             headers: {
                                 'Authorization': `Bearer ${swoogoToken}`,
