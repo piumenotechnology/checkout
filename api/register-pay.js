@@ -153,6 +153,7 @@ const handler = async (req, res) => {
                     await axios.put(
                         `https://api.swoogo.com/api/v1/registrants/update/${r.data.id}`,
                         {
+                            // registration_status: 'confirmed',
                             send_email: 'true',
                         },
                         {
