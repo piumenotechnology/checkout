@@ -156,7 +156,7 @@ const handler = async (req, res) => {
 
                 try {
                     const updateRes = await axios.put(
-                        `https://api.swoogo.com/api/v1/registrants/${r.data.id}`,
+                        `https://api.swoogo.com/api/v1/registrants/update/${r.data.id}`,
                         updateData,
                         {
                             headers: {
