@@ -43,6 +43,7 @@ const handler = async (req, res) => {
                     event_id: eventId,
                     first_name: participant.firstName,
                     last_name: participant.lastName,
+                    send_email: 'false',
                     discount_code: participant.discount || '',
                     reg_type_id: participant.regType,
                     company: participant.company,
@@ -148,8 +149,23 @@ const handler = async (req, res) => {
         const updateResponses = await Promise.all(
             registrantResponses.map(async (r) => {
                 try {
+                    await axios.put(
+                        `https://api.swoogo.com/api/v1/registrants/update/${r.data.id}`,
+                        {
+                            send_email: 'true',
+                        },
+                        {
+                            headers: {
+                                'Authorization': `Bearer ${swoogoToken}`,
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                            },
+                        }
+                    );
+
                     await axios.post(
                         `https://api.swoogo.com/api/v1/registrants/${r.data.id}/trigger-email/registration_created`,
+                        {},
                         {
                             headers: {
                                 'Authorization': `Bearer ${swoogoToken}`,
