@@ -20,7 +20,8 @@ const handler = async (req, res) => {
         billingCountry,
         billingPostalCode,
         participants,
-        eventId
+        eventId,
+        fieldMap
     } = req.body;
 
     if (!token || !amount || !participants || !eventId) {
@@ -52,8 +53,8 @@ const handler = async (req, res) => {
                 formData.append('company', participant.company);
                 formData.append('job_title', participant.jobTitle);
                 formData.append('work_phone', participant.phone);
-                formData.append('c_5970654', participant.country);
-                formData.append('c_5970655', participant.state);
+                formData.append(fieldMap.country, participant.country);
+                formData.append(fieldMap.state, participant.state);
                 formData.append('payment_method', 'credit_card');
 
                 try {
