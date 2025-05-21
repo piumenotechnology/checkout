@@ -180,7 +180,7 @@ const handler = async (req, res) => {
                     );
 
                     const allParticipants = Object.values(participants).flat();
-                    await sendCheckoutEmail(allParticipants);
+                    await sendPlannerEmail(allParticipants);
 
                     return {
                         success: true,
