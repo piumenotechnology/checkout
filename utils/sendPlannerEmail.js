@@ -55,7 +55,7 @@ async function sendPlannerEmail(participants) {
 
     try {
         await resend.emails.send({
-            from: 'test@strategyinstitute.com',
+            from: 'Planner Alert <noreply@on.resend.dev>',
             to: TO_EMAILS,
             subject: 'CHECKOUT TEST has Closed in Swoogo (CHECKOUT TEST)',
             text: emailBody,
