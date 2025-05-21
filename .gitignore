@@ -1,0 +1,17 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Vercel build output (optional)
+.vercel/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
