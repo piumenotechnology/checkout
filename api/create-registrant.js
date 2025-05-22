@@ -7,7 +7,7 @@ const handler = async (req, res) => {
         return res.status(405).json({ success: false, message: 'Method not allowed' });
     }
 
-    const { participants, eventId, fieldMap } = req.body;
+    const { participants, eventId, fieldMap, reference } = req.body;
 
     if (!participants || !eventId) {
         return res.status(400).json({ success: false, message: 'Missing required fields' });
@@ -40,6 +40,7 @@ const handler = async (req, res) => {
                     [fieldMap.country]: participant.country,
                     [fieldMap.state]: participant.state,
                     payment_method: 'credit_card',
+                    reference: reference
                 };
 
                 return await postRegistrant(swoogoToken, registrantData);
