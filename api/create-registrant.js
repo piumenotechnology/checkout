@@ -7,24 +7,63 @@ const handler = async (req, res) => {
         return res.status(405).json({ success: false, message: 'Method not allowed' });
     }
 
-    try {
-        const token = await getToken();
-        const registrant = await postRegistrant(token, req.body);
+    const { participants, eventId, fieldMap } = req.body;
 
-        console.log(registrant);
+    if (!participants || !eventId) {
+        return res.status(400).json({ success: false, message: 'Missing required fields' });
+    }
+
+    let swoogoToken;
+
+    try {
+        swoogoToken = await getToken();
+        if (!swoogoToken) {
+            throw new Error('Failed to get swoogo token');
+        }
+
+        const allParticipants = Object.values(participants).flat();
+
+        const registrantResponses = await Promise.all(
+            allParticipants.map(async (participant) => {
+                const registrantData = {
+                    email: participant.email,
+                    event_id: eventId,
+                    first_name: participant.firstName,
+                    last_name: participant.lastName,
+                    registration_status: 'in_progress',
+                    send_email: 'false',
+                    discount_code: participant.discount || '',
+                    reg_type_id: participant.regType,
+                    company: participant.company,
+                    job_title: participant.jobTitle,
+                    work_phone: participant.phone,
+                    [fieldMap.country]: participant.country,
+                    [fieldMap.state]: participant.state,
+                    payment_method: 'credit_card',
+                };
+
+                return await postRegistrant(swoogoToken, registrantData);
+            })
+        );
+
+        if (registrantResponses.some(result => !result.success)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Failed to register one or more participants',
+                failedParticipants: registrantResponses.filter(r => !r.success),
+            });
+        }
 
         return res.status(200).json({
             success: true,
-            data: registrant,
-            nextStep: 'confirmation',
+            registrantResults: updateResponses,
+            nextStep: 'payment',
         });
     } catch (error) {
-        console.error('Post error:', error);
-
+        console.error('Error:', error.response?.data || error.message);
         return res.status(500).json({
             success: false,
-            error: 'Failed to create registrant',
-            message: error.message,
+            message: error.response?.data?.message || error.message || 'Internal server error',
         });
     }
 };
