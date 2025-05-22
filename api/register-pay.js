@@ -1,7 +1,6 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const getToken = require('../utils/getToken');
 const allowCors = require('../utils/allowCors');
-const sendPlannerEmail = require('../utils/sendPlannerEmail');
 const axios = require('axios');
 const { URLSearchParams } = require('url');
 
@@ -178,9 +177,6 @@ const handler = async (req, res) => {
                             },
                         }
                     );
-
-                    const allParticipants = Object.values(participants).flat();
-                    await sendPlannerEmail(allParticipants);
 
                     return {
                         success: true,
