@@ -40,7 +40,7 @@ const handler = async (req, res) => {
                     [fieldMap.country]: participant.country,
                     [fieldMap.state]: participant.state,
                     payment_method: 'credit_card',
-                    reference: reference
+                    reference: reference,
                 };
 
                 return await postRegistrant(swoogoToken, registrantData);
@@ -55,8 +55,13 @@ const handler = async (req, res) => {
             });
         }
 
+        const registrantIds = registrantResponses.map(response => response.data.id);
+        const expiry = new Date(Date.now() + 10 * 60 * 1000).toISOString();
+
         return res.status(200).json({
             success: true,
+            registrantIds,
+            expiry,
             registrantResults: registrantResponses,
             nextStep: 'payment',
         });
