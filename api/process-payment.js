@@ -1,5 +1,6 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const allowCors = require('../utils/allowCors');
+const getToken = require('../utils/getToken');
 const axios = require('axios');
 const { URLSearchParams } = require('url');
 
@@ -19,14 +20,19 @@ const handler = async (req, res) => {
         billingCountry,
         billingPostalCode,
         registrantIds,
-        swoogoToken,
     } = req.body;
 
-    if (!token || !amount || !email || !nameOnCard || !billingAddressLine1 || !billingCity || !billingCountry || !billingPostalCode || !registrantIds || !swoogoToken) {
+    // Validate required fields
+    if (!token || !amount || !email || !nameOnCard || !billingAddressLine1 || !billingCity || !billingCountry || !billingPostalCode || !registrantIds) {
         return res.status(400).json({ success: false, message: 'Missing required fields' });
     }
 
     try {
+        const swoogoToken = await getToken();
+        if (!swoogoToken) {
+            throw new Error('Failed to retrieve Swoogo API token');
+        }
+
         // Create customer
         const customer = await stripe.customers.create({
             email,
