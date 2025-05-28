@@ -55,6 +55,8 @@ const handler = async (req, res) => {
                 formData.append('work_phone', participant.phone);
                 formData.append(fieldMap.country, participant.country);
                 formData.append(fieldMap.state, participant.state);
+                formData.append(fieldMap.dietary, participant.dietary);
+                formData.append(fieldMap.checkbox, participant.checkbox);
                 formData.append('payment_method', 'credit_card');
 
                 try {
