@@ -16,6 +16,10 @@
       "dest": "/api/discounts.js"
     },
     {
+      "src": "/api/country",
+      "dest": "/api/country.js"
+    },
+    {
       "src": "/api/reg-types",
       "dest": "/api/reg-types.js"
     },
