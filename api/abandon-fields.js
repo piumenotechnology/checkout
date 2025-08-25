@@ -11,6 +11,12 @@ const handler = async (req, res) => {
 
         const data = JSON.parse(req.body);
 
+        const timestampCA = new Date().toLocaleString("en-CA", {
+            timeZone: "America/Toronto",
+            dateStyle: "full",
+            timeStyle: "long",
+        });
+
         const msg = {
             to: 'izzudinfasya@gmail.com',
             from: 'masfess24@gmail.com',
@@ -20,8 +26,8 @@ const handler = async (req, res) => {
                 <p><strong>Names:</strong> ${data.userName?.join(", ") || "N/A"}</p>
                 <p><strong>Emails:</strong> ${data.emailAddresses?.join(", ") || "N/A"}</p>
                 <p><strong>Companies:</strong> ${data.compNames?.join(", ") || "N/A"}</p>
-                <p><strong>Page:</strong> ${data.eventWeb}</p>
-                <p><strong>Time:</strong> ${data.timestamp}</p>
+                <p><strong>Event Web:</strong> ${data.eventWeb}</p>
+                <p><strong>Time:</strong> ${timestampCA}</p>
             `,
         };
 
