@@ -1,0 +1,37 @@
+const sgMail = require('@sendgrid/mail');
+const allowCors = require('../utils/allowCors');
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+const handler = async (req, res) => {
+    try {
+        if (req.method !== 'POST') {
+            return res.status(405).json({ error: 'Method not allowed' });
+        }
+
+        const data = JSON.parse(req.body);
+
+        const msg = {
+            to: 'izzudinfasya@gmail.com',
+            from: 'masfess24@gmail.com',
+            subject: 'Abandoned Checkout Form',
+            html: `
+                <h3>Abandoned Form Data</h3>
+                <p><strong>Names:</strong> ${data.userName?.join(", ") || "N/A"}</p>
+                <p><strong>Emails:</strong> ${data.emailAddresses?.join(", ") || "N/A"}</p>
+                <p><strong>Companies:</strong> ${data.compNames?.join(", ") || "N/A"}</p>
+                <p><strong>Page:</strong> ${data.eventWeb}</p>
+                <p><strong>Time:</strong> ${data.timestamp}</p>
+            `,
+        };
+
+        await sgMail.send(msg);
+
+        res.status(200).json({ success: true });
+    } catch (error) {
+        console.error('Error sending abandon email:', error);
+        res.status(500).json({ error: 'Failed to send email' });
+    }
+};
+
+module.exports = allowCors(handler);

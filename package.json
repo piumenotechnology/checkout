@@ -10,6 +10,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@sendgrid/mail": "^8.1.5",
     "@sparticuz/chromium": "^133.0.0",
     "axios": "^1.8.4",
     "countrycitystatejson": "^25.5.2908",

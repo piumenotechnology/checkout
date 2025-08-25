@@ -46,6 +46,10 @@
     {
       "src": "/api/add-to-calendar",
       "dest": "/api/add-to-calendar.js"
+    },
+    {
+      "src": "/api/abandon-fields",
+      "dest": "/api/abandon-fields.js"
     }
   ]
 }
