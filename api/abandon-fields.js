@@ -18,8 +18,8 @@ const handler = async (req, res) => {
         });
 
         const msg = {
-            to: ['rimbunkarya2016@gmail.com', 'masfess24@gmail.com'],
-            from: 'izzudinfasya@gmail.com',
+            to: ['rimbunkarya2016@gmail.com', 'izzudinfasya@gmail.com'],
+            from: 'masfess24@gmail.com',
             subject: 'Abandoned Checkout Form',
             html: `
                 <h3>Abandoned Form Data</h3>
