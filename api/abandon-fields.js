@@ -17,6 +17,17 @@ const handler = async (req, res) => {
             timeStyle: "long",
         });
 
+        let fullEmails = [];
+
+        if (Array.isArray(data.emailUsers) && Array.isArray(data.emailDomains)) {
+            fullEmails = data.emailUsers.map((user, idx) => {
+                const domain = data.emailDomains[idx] || "";
+                return user && domain ? `${user}@${domain}` : user || domain || "";
+            }).filter(Boolean);
+        } else if (Array.isArray(data.emailAddresses)) {
+            fullEmails = data.emailAddresses;
+        }
+
         const msg = {
             to: ['rimbunkarya2016@gmail.com', 'izzudinfasya@gmail.com'],
             from: 'masfess24@gmail.com',
@@ -24,7 +35,7 @@ const handler = async (req, res) => {
             html: `
                 <h3>Abandoned Form Data</h3>
                 <p><strong>Names:</strong> ${data.userName?.join(", ") || "N/A"}</p>
-                <p><strong>Emails:</strong> ${data.emailAddresses?.join(", ") || "N/A"}</p>
+                <p><strong>Emails:</strong> ${fullEmails.join(", ") || "N/A"}</p>
                 <p><strong>Companies:</strong> ${data.compNames?.join(", ") || "N/A"}</p>
                 <p><strong>Event Web:</strong> ${data.eventWeb}</p>
                 <p><strong>Time:</strong> ${timestampCA}</p>
